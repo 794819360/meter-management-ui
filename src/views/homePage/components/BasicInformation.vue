@@ -46,7 +46,7 @@
                 <el-form-item prop="startTime">
                   <div class="date-box">
                     <el-date-picker v-model="table.startTime" type="datetime" placeholder="选择日期时间" size="small"
-                      :disabled="!disabledone" @change="handleDateTimeChange" :picker-options="DateTimePicker">
+                       @change="handleDateTimeChange" :picker-options="DateTimePicker">
                     </el-date-picker>
                   </div>
                 </el-form-item>
@@ -55,7 +55,7 @@
                 <el-form-item prop="endTime">
                   <div class="date-box">
                     <el-date-picker v-model="table.endTime" type="datetime" placeholder="选择日期时间" size="small"
-                      :disabled="!disabledone" @change="handleDateTimeChange" :picker-options="DateTimePicker">
+                       @change="handleDateTimeChange" :picker-options="DateTimePicker">
                     </el-date-picker>
                   </div>
                 </el-form-item>
@@ -81,8 +81,7 @@
 
 </template>
 <script>
-// import { getProject, updateHome, } from '@/api/home'
-// import { getInfo } from '@/api/login'
+
 
 
 export default {
@@ -91,6 +90,9 @@ export default {
     return {
       // roles: [],
       table: {
+        projectName:'测试管理系统',
+        createBy:'电池',
+        progress:20
       },
       dialogVisible: false,
       disabledone: false,

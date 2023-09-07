@@ -3,12 +3,17 @@
     <el-card class="box-card">
       <el-form :inline="true" :model="searchFormObj">
         <el-form-item label="项目名称">
-          <el-input v-model="searchFormObj.projectName" placeholder="请输入项目名称" />
+          <el-input
+            v-model="searchFormObj.projectName"
+            placeholder="请输入项目名称"
+          />
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="handleQuery">查询</el-button>
-          <el-button type="info" @click="postProjectUnderwayList('isReset')">重置</el-button>
+          <el-button type="primary" @click="handleQuery"  icon="el-icon-search">查询</el-button> 
+          <el-button type="info" @click="postProjectUnderwayList('isReset')" icon="el-icon-refresh" 
+            >重置</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -22,12 +27,14 @@
 
             <el-table-column label="子项目名称">
               <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.resqList" :key="index">
+                <span v-for="(item, index) in scope.row.resqList" :key="index">
                   <span v-if="scope.row.resqList.length > 0">
-                    <p style="
+                    <p
+                      style="
                         text-align: center;
                         border-bottom: 1px solid #ebeef5;
-                      ">
+                      "
+                    >
                       {{ item.projectName }}
                     </p>
                   </span>
@@ -50,12 +57,14 @@
 
             <el-table-column label="项目发起日期">
               <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.resqList" :key="index">
+                <span v-for="(item, index) in scope.row.resqList" :key="index">
                   <span v-if="scope.row.resqList.length > 1">
-                    <p style="
+                    <p
+                      style="
                         text-align: center;
                         border-bottom: 1px solid #ebeef5;
-                      ">
+                      "
+                    >
                       {{ item.createTime }}
                     </p>
                   </span>
@@ -70,12 +79,14 @@
 
             <el-table-column label="项目启用日期">
               <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.resqList" :key="index">
+                <span v-for="(item, index) in scope.row.resqList" :key="index">
                   <span v-if="scope.row.resqList.length > 1">
-                    <p style="
+                    <p
+                      style="
                         text-align: center;
                         border-bottom: 1px solid #ebeef5;
-                      ">
+                      "
+                    >
                       {{ item.createTime }}
                     </p>
                   </span>
@@ -90,12 +101,14 @@
 
             <el-table-column label="项目启用日期">
               <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.resqList" :key="index">
+                <span v-for="(item, index) in scope.row.resqList" :key="index">
                   <span v-if="scope.row.resqList.length > 1">
-                    <p style="
+                    <p
+                      style="
                         text-align: center;
                         border-bottom: 1px solid #ebeef5;
-                      ">
+                      "
+                    >
                       {{ item.projectEstime }}
                     </p>
                   </span>
@@ -110,12 +123,14 @@
 
             <el-table-column label="项目进度">
               <template slot-scope="scope">
-                <span v-for="(item,index) in scope.row.resqList" :key="index">
+                <span v-for="(item, index) in scope.row.resqList" :key="index">
                   <span v-if="scope.row.resqList.length > 1">
-                    <p style="
+                    <p
+                      style="
                         text-align: center;
                         border-bottom: 1px solid #ebeef5;
-                      ">
+                      "
+                    >
                       {{ item.projectProgress }}
                     </p>
                   </span>
@@ -130,31 +145,36 @@
 
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <span v-if="rolePlayWho != 'Attache' &&
+                <span
+                  v-if="
+                    rolePlayWho != 'Attache' &&
                     rolePlayWho != 'HR' &&
                     scope.row.status === 1
-                    ">
-                  <el-button type="text" size="small" @click="projectShow(scope.row)">查看</el-button>
-                </span>
-                <el-button type="text" size="small" @click="needShow(scope.row)">需求管理</el-button>
-
-                <span v-if="rolePlayWho === 'Attache' && scope.row.status === 1">
-                  <el-button type="text" size="small" @click="projectShowClause(scope.row)">款项分配</el-button>
-                </span>
-
-                <span v-if="rolePlayWho === 'HR' && scope.row.status === 1">
-                  <span v-if="scope.row.resqList.length > 0">
-                    <span v-for="(item,index) in scope.row.resqList" :key="index">
-                      <p>
-                        <el-button type="text" size="small" @click="projectSalaryPersonnel(item)">人员薪资</el-button>
-                      </p>
-                    </span>
-                  </span>
+                  "
+                >
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="projectShow(scope.row)"
+                    >查看</el-button
+                  >
                 </span>
 
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            background
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pagination.pageNum"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="pagination.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="pagination.total"
+            style="float: right; margin: 12px 0"
+          >
+          </el-pagination>
         </el-card>
       </div>
     </el-card>
@@ -163,109 +183,88 @@
 
 <script>
 export default {
-  name: 'ProjectStarted',
+  name: "ProjectStarted",
   data() {
     return {
       searchFormObj: {},
       showTableArray: [],
-      rolePlayWho: ''
-    }
+      rolePlayWho: "",
+      // 分页
+      pagination: {
+        // 分页数据
+        pageSize: 10,
+        pageNum: 1,
+        total: 0,
+      },
+    };
   },
-  created() {
-    // this.postProjectUnderwayList()
-    // this.rolePlayWho = this.$store.state.user.roles[0]
-  },
+  created() {},
   methods: {
     // 查看项目
     projectShow(val) {
       this.$router.push({
-        path: '/project-mgr/project-show',
+        path: "/project-mgr/project-show",
         query: {
           projectId: val.id,
           attacheId: val.attacheId,
-          status: val.status
-        }
-      })
+          status: val.status,
+        },
+      });
     },
-    // 跳转需求管理
-    needShow(val) {
-      this.$router.push({
-        path: '/project-mgr/need-all',
-        query: {
-          projectId: val.id,
-          attacheId: val.attacheId,
-          status: val.status
-        }
-      })
-    },
+    // 重置
     postProjectUnderwayList(datas) {
-
-      if(datas === 'isReset') {
-        this.searchFormObj = {}
-        datas = {}
+      if (datas === "isReset") {
+        this.searchFormObj = {};
+        datas = {};
       }
-      let data = datas || {}
+      let data = datas || {};
       projectUnderwayList(data).then((res) => {
-        let data = res.data
+        let data = res.data;
         data.forEach((item) => {
           if (item.resqList.length > 0) {
-            item.isChild = true
+            item.isChild = true;
           }
-          item.createTime = this.timeToTime(item.createTime)
-          item.projectEstime = this.timeToTime(item.projectEstime)
-          item.projectStart = this.timeToTime(item.projectStart)
+          item.createTime = this.timeToTime(item.createTime);
+          item.projectEstime = this.timeToTime(item.projectEstime);
+          item.projectStart = this.timeToTime(item.projectStart);
           item.resqList.forEach((itemChild) => {
-            itemChild.createTime = this.timeToTime(itemChild.createTime)
-            itemChild.projectEstime = this.timeToTime(itemChild.projectEstime)
-          })
-        })
-        this.showTableArray = data
-      })
+            itemChild.createTime = this.timeToTime(itemChild.createTime);
+            itemChild.projectEstime = this.timeToTime(itemChild.projectEstime);
+          });
+        });
+        this.showTableArray = data;
+      });
     },
+    // 时间格式化
     timeToTime(time) {
-      let newTime = new Date(parseInt(time))
-      let y = newTime.getFullYear()
-      let m = newTime.getMonth() + 1
-      let d = newTime.getDate()
-      let h = newTime.getHours()
-      let mm = newTime.getMinutes()
-      let s = newTime.getSeconds()
-      return y + '.' + m + '.' + d + ' ' + h + ':' + mm + ':' + s
+      let newTime = new Date(parseInt(time));
+      let y = newTime.getFullYear();
+      let m = newTime.getMonth() + 1;
+      let d = newTime.getDate();
+      let h = newTime.getHours();
+      let mm = newTime.getMinutes();
+      let s = newTime.getSeconds();
+      return y + "." + m + "." + d + " " + h + ":" + mm + ":" + s;
     },
-
-    // 跳转款项分配页面
-    projectShowClause(val) {
-      this.$router.push({
-        path: '/project-mgr/project-allocation',
-        query: {
-          projectId: val.id,
-          status: val.status,
-          technicalId: val.technicalId
-        }
-      })
+    // 条数改变
+    handleSizeChange(val) {
+      this.pagination.pageSize = val;
+      this.projectListUnm();
     },
-
-    // 跳转hr
-    projectSalaryPersonnel(val) {
-      this.$router.push({
-        path: '/project-mgr/project-Personnel',
-        query: {
-          projectId: val.id,
-          status: val.status,
-          technicalId: val.technicalId
-        }
-      })
+    // 页码改变
+    handleCurrentChange(val) {
+      this.pagination.pageNum = val;
+      this.projectListUnm();
     },
-
+    // 查询
     handleQuery() {
       let data = {
-        name: this.searchFormObj.projectName
-      }
-      this.postProjectUnderwayList(data)
-    }
-
-  }
-}
+        name: this.searchFormObj.projectName,
+      };
+      this.postProjectUnderwayList(data);
+    },
+  },
+};
 </script>
 
 <style>

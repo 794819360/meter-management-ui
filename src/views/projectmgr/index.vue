@@ -10,9 +10,6 @@
       <el-tab-pane label="进行中" name="started">
         <project-started />
       </el-tab-pane>
-
-      <!-- 已取消 -->
-      <!-- <el-tab-pane label="已取消" name="been-cancelled"></el-tab-pane> -->
     </el-tabs>
   </div>
 </template>
@@ -33,23 +30,12 @@ export default {
     }
   },
   created() {
-    this.rolePlayWho = this.$store.state.user.roles[0]
-    this.goRoute()
+    // this.rolePlayWho = this.$store.state.user.roles[0]
+    // this.goRoute()
   },
-  // watch: {
-  //   $route(n) {
-  //     this.activeName = n.query.activeNameNow
-  //   }
-  // },
+
   methods: {
-    goRoute() {
-      if (this.$route.query.activeNameNow) {
-        this.activeName = this.$route.query.activeNameNow
-      }
-      if (this.rolePlayWho === 'HR') {
-        this.activeName = 'started'
-      }
-    }
+
   }
 }
 </script>

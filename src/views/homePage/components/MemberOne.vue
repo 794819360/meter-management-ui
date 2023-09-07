@@ -21,6 +21,7 @@ export default {
   },
   created () {
     // this.getEmployee()
+    this.drawone();
   },
   mounted () {
   },
