@@ -17,14 +17,13 @@
             >
               <el-option label="待启用" value="0" />
               <el-option label="待审核" value="1" />
-              <el-option label="待分配" value="2" />
-              <el-option label="已驳回" value="3" />
-              <el-option label="已挂起" value="4" />
+              <el-option label="已驳回" value="2" />
+              <el-option label="已挂起" value="3" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleQuery">查询</el-button>
-            <el-button type="info" @click="projectListUnm">重置</el-button>
+            <el-button type="primary" icon="el-icon-search"  @click="handleQuery" >查询</el-button>
+            <el-button icon="el-icon-refresh"  @click="projectListUnm">重置</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -32,8 +31,11 @@
 
     <!-- 操作列表 -->
     <div>
-      <el-card class="box-card" v-if="rolePlayWho === 'ProjectManager'">
-        <el-button type="primary" @click="handleLinkToProjectAdd"
+      <el-card class="box-card">
+        <el-button type="primary"
+          plain
+          icon="el-icon-plus"
+          @click="handleLinkToProjectAdd"
           >新增</el-button
         >
       </el-card>
@@ -63,67 +65,41 @@
           <el-table-column prop="statusTitle" label="项目状态" align="center" />
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
-              <!--  项目经理可看 -->
-              <span v-if="rolePlayWho === 'ProjectManager'">
-                <el-button
-                  v-show="scope.row.projectStatus === 2"
+              <span>
+                <!-- <el-button
                   type="text"
                   size="small"
                   @click="distribution(scope.row)"
                   :disabled="scope.row.isHeld ? true : false"
                   >分配</el-button
-                >
+                > -->
                 <!-- 当项目启动后，隐藏启动按钮 -->
                 <el-button
-                  v-show="scope.row.projectStatus === 0"
+                  size="mini"
                   type="text"
-                  size="small"
+                  icon="el-icon-circle-check"
                   @click="projectInitiate(scope.row)"
-                  :disabled="scope.row.isHeld ? true : false"
                   >启用</el-button
                 >
                 <el-button
-                  v-show="
-                    scope.row.projectStatus === 3 ||
-                    scope.row.projectStatus === 0
-                  "
+                  size="mini"
                   type="text"
-                  size="small"
+                  icon="el-icon-edit"
                   @click="editProject(scope.row)"
-                  :disabled="scope.row.isHeld ? true : false"
                   >编辑</el-button
                 >
                 <el-button
+                  size="mini"
                   type="text"
-                  size="small"
-                  :disabled="scope.row.isHeld ? true : false"
+                  icon="el-icon-delete"
                   @click="deleteProject(scope.row)"
                   >删除</el-button
-                >
-              </span>
-
-              <!-- 财务专员可看 -->
-              <span
-                v-if="
-                  rolePlayWho === 'Attache' && scope.row.projectStatus === 1
-                "
-              >
-                <el-button
-                  type="text"
-                  size="small"
-                  @click="financeAudit(scope.row)"
-                  :disabled="scope.row.isHeld ? true : false"
-                  >审核</el-button
                 >
               </span>
             </template>
           </el-table-column>
 
-          <el-table-column
-            label="是否挂起"
-            align="center"
-            v-if="rolePlayWho === 'ProjectManager'"
-          >
+          <el-table-column label="是否挂起" align="center">
             <template slot-scope="scope">
               <el-switch
                 @change="handleStatusChange(scope.row)"
@@ -135,6 +111,18 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pagination.pageNum"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pagination.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pagination.total"
+          style="float: right; margin: 12px 0"
+        >
+        </el-pagination>
       </el-card>
     </div>
   </div>
@@ -145,27 +133,43 @@
 </template>
 
 <script>
-
 export default {
   name: "NotStarted",
   data() {
     return {
       searchFormObj: {}, // 搜索表单
-      showTableArray: [],
-      rolePlayWho: "",
+      showTableArray: [
+        {
+          projectName: "测试项目1",
+          createTime: "2023-09-07",
+          projectEstime:'2023-09-27',
+          projectStart: "",
+          statusTitle: "待启用",
+        },
+        {
+          projectName: "测试项目2",
+          createTime: "2023-09-07",
+          projectEstime:'2023-09-27',
+          projectStart: "",
+          statusTitle: "待审核",
+        },
+      ],
       heldStatus: 0, // 0 是启用  1是禁用
       loading: false,
+      // 分页
+      pagination: {
+        // 分页数据
+        pageSize: 10,
+        pageNum: 1,
+        total: 0,
+      },
     };
   },
-  created() {
-    // this.projectListUnm();
-    // this.rolePlayWho = this.$store.state.user.roles[0];
-    // console.log(this.rolePlayWho);
-  },
+  created() {},
   methods: {
     // 项目新增页面 - 路由跳转
     handleLinkToProjectAdd() {
-      this.$router.push("/project-mgr/project-add");
+      this.$router.push("/projectmgr/project-add");
     },
 
     // 将项目转为启动状态
@@ -190,18 +194,6 @@ export default {
         });
     },
 
-    // 审核项目财务 - 路由跳转
-    financeAudit(val) {
-      this.$router.push({
-        path: "/project-mgr/project-audit",
-        query: {
-          projectId: val.id,
-          attacheId: val.attacheId.toString(),
-          status: val.status,
-        },
-      });
-    },
-
     // 项目分配人员
     distribution(val) {
       this.$router.push({
@@ -217,26 +209,10 @@ export default {
 
     // 编辑
     editProject(val) {
-      if (val.projectStatus === 0) {
-        this.$router.push({
-          path: "/project-mgr/project-edit",
-          query: {
-            projectId: val.id,
-            attacheId: val.attacheId.toString(),
-            status: val.status,
-            isEnable: "yes",
-          },
-        });
-      } else if (val.projectStatus === 3) {
-        this.$router.push({
-          path: "/project-mgr/project-edit",
-          query: {
-            projectId: val.id,
-            attacheId: val.attacheId.toString(),
-            status: val.status,
-          },
-        });
-      }
+      this.$router.push({
+        path: "/projectmgr/edit",
+        query: val,
+      });
     },
 
     // 获取展示表格数据
@@ -271,7 +247,7 @@ export default {
         this.loading = false;
       });
     },
-
+    // 删除
     deleteProject(item) {
       console.log(item);
       this.$confirm("是否删除项目?", "删除项目", {
@@ -294,7 +270,7 @@ export default {
           return;
         });
     },
-
+    // 时间戳转化
     timeToTime(time) {
       let newTime = new Date(parseInt(time));
       let y = newTime.getFullYear();
@@ -305,7 +281,7 @@ export default {
       let s = newTime.getSeconds();
       return y + "." + m + "." + d + " " + h + ":" + mm + ":" + s;
     },
-
+    // 挂起
     handleStatusChange(val) {
       let data = {
         heldStatus: val.isHeld,
@@ -315,7 +291,16 @@ export default {
         this.$message.success("修改成功");
       });
     },
-
+    // 条数改变
+    handleSizeChange(val) {
+      this.pagination.pageSize = val;
+      this.projectListUnm();
+    },
+    // 页码改变
+    handleCurrentChange(val) {
+      this.pagination.pageNum = val;
+      this.projectListUnm();
+    },
     // 查询事件
     handleQuery() {
       let data = {
