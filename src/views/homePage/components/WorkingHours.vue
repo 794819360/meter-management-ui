@@ -11,6 +11,8 @@
       </div>
     </div>
     <div class="hour">
+      <!-- <div id="myChart" class="charts" ></div>
+      <div id="myChart2" class="charts"></div> -->
       <div id="myChart" class="charts" v-if="days"></div>
       <div id="myChart2" class="charts" v-else></div>
     </div>
@@ -42,7 +44,10 @@ export default {
   },
 
   mounted () {
+    setTimeout(() => {
+      this.Line()
 
+    }, 0);
   },
   created () {
     // this.getHours()
@@ -113,11 +118,17 @@ export default {
       myChart.setOption({
         xAxis: {
           axisLabel: {
-            formatter: `{value}日`, // 在每个x轴坐标都添加了单位
+            formatter: `{value}`, // 在每个x轴坐标都添加了单位
             interval: 0,//代表显示所有x轴标签显示
           },
           type: 'category',
-          data: this.projectDate
+          data: ['9/7', '9/8', '9/9', '9/10', '9/11', '9/12', '9/13']
+        },
+        grid: {
+          top: '25%',//距上边距
+          left: '15%',//距离左边距
+          right: '20%',//距离右边距
+          bottom: '25%',//距离下边距
         },
         yAxis: {
           type: 'value',
@@ -133,7 +144,7 @@ export default {
         series: [
           {
             name: '工时',
-            data: this.hours,
+            data: [150, 230, 224, 218, 135, 147, 260],
             itemStyle: {
               normal: {
                 color: '#5087ec',
@@ -160,13 +171,19 @@ export default {
         title: {
           text: ''
         },
+        grid: {
+          top: '25%',//距上边距
+          left: '15%',//距离左边距
+          right: '20%',//距离右边距
+          bottom: '25%',//距离下边距
+        },
         xAxis: {
           axisLabel: {
             formatter: `{value}月`, // 在每个x轴坐标都添加了单位
             interval: 0,//代表显示所有x轴标签显示
           },
           type: 'category',
-          data: this.month
+          data: ['7', '8', '9', '10', '11', '12', '13']
         },
         yAxis: {
           type: 'value',
@@ -181,7 +198,7 @@ export default {
         },
         series: [{
           name: '工时',
-          data: this.hoursTwo,
+          data: [150, 230, 224, 218, 135, 147, 260],
           barGap: 0,//不同系列的柱间距离，为百分比
           itemStyle: {
             normal: {

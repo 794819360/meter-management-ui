@@ -1,6 +1,6 @@
  <template>
   <div class="edition">
-    <div class="edition-title">版本数量 </div>
+    <div class="edition-title">测试数量 </div>
     <div class="edition-item">
       <div class="edition-itemone">
         <div class="titleone">
@@ -11,7 +11,7 @@
                   {{numberData.total}}
                 </div>
                 <div v-else>
-                  0
+                  7
                 </div>
               </template>
             </el-col>
@@ -68,7 +68,7 @@
               {{numberData.complete}}
             </span>
             <span class="title2" v-else>
-              0
+             7
             </span>
           </template>
         </div>

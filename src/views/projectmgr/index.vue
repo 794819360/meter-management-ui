@@ -1,16 +1,15 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeName">
-      <!-- 未开始 -->
-      <el-tab-pane label="未开始" name="not-started" v-if="rolePlayWho !='HR'">
+    <!-- <el-tabs v-model="activeName">
+      <el-tab-pane label="未开始" name="not-started">
         <not-started />
       </el-tab-pane>
 
-      <!-- 进行中 -->
       <el-tab-pane label="进行中" name="started">
         <project-started />
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs> -->
+    <not-started />
   </div>
 </template>
 

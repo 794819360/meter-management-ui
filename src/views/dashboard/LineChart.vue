@@ -102,7 +102,6 @@ export default {
               }
             }
           },
-          smooth: true,
           type: 'line',
           data: expectedData,
           animationDuration: 2800,
@@ -110,7 +109,6 @@ export default {
         },
         {
           name: 'actual',
-          smooth: true,
           type: 'line',
           itemStyle: {
             normal: {

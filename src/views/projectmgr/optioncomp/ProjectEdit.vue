@@ -148,6 +148,16 @@
 
     <el-card class="box-card">
       <div class="btnLocation">
+        <el-button
+          type="info"
+          plain
+          @click="
+            () => {
+              this.$router.go(-1);
+            }
+          "
+          >取消</el-button
+        >
         <el-button type="success" plain @click="handleUpdate">修改</el-button>
       </div>
     </el-card>

@@ -9,6 +9,8 @@
 </template>
 <script>
 // import { getEmployee } from '@/api/home'
+import * as echarts from 'echarts';
+require('echarts/theme/macarons') // echarts theme
 
 export default {
   name: "MemberOne",
@@ -21,9 +23,12 @@ export default {
   },
   created () {
     // this.getEmployee()
-    this.drawone();
   },
   mounted () {
+    setTimeout(() => {
+    this.drawone();
+      
+    }, 0);
   },
   methods: {
     async getEmployee () {
@@ -38,7 +43,7 @@ export default {
     },
     drawone () {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChartMember"));
+      let myChart = echarts.init(document.getElementById("myChartMember"));
       window.addEventListener("resize", function () { myChart.resize(); });
 
       // 绘制图表
@@ -71,7 +76,7 @@ export default {
             }
           },
           type: 'category',
-          data: this.employeeName
+          data: ['张三', '李四', '王五', '沈六', '王祺', '赵四达']
         },
         yAxis: {
           type: 'value',
@@ -92,7 +97,7 @@ export default {
         },
         series: [{
           name: '已完成',
-          data: this.complete,
+          data: [5,1,10,5,20],
           barGap: 0,//不同系列的柱间距离，为百分比
           itemStyle: {
             normal: {
@@ -107,7 +112,7 @@ export default {
         },
         {
           name: '未完成',
-          data: this.notComplete,
+          data: [7,4,0,15,2],
           itemStyle: {
             normal: {
               color: ' #68bbc4',
