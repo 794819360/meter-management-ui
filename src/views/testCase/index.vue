@@ -2,35 +2,17 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="用例名称" prop="testTitle">
-        <el-input
-          v-model="queryParams.testTitle"
-          placeholder="请输入用例名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.testTitle" placeholder="请输入用例名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="所属模块" prop="testModule">
-        <el-input
-          v-model="queryParams.testModule"
-          placeholder="请输入所属模块"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.testModule" placeholder="请输入所属模块" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-     
+
       <el-form-item label="创建者" prop="creator">
-        <el-input
-          v-model="queryParams.creator"
-          placeholder="请输入创建者"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.creator" placeholder="请输入创建者" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="执行日期" prop="executionDate">
-        <el-date-picker clearable
-          v-model="queryParams.executionDate"
-          type="date"
-          value-format="yyyy-MM-dd"
+        <el-date-picker clearable v-model="queryParams.executionDate" type="date" value-format="yyyy-MM-dd"
           placeholder="请选择执行日期">
         </el-date-picker>
       </el-form-item>
@@ -42,46 +24,20 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['pas:case:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['pas:case:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['pas:case:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['pas:case:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['pas:case:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['pas:case:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['pas:case:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['pas:case:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -101,70 +57,34 @@
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['pas:case:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['pas:case:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['pas:case:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['pas:case:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改【请填写功能名称】对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px"> 
+        <el-form-item label="用例名称" prop="testTitle">
+          <el-input v-model="form.testTitle" placeholder="请输入用例标题" />
+        </el-form-item>
         <el-form-item label="所属模块" prop="testModule">
           <el-input v-model="form.testModule" placeholder="请输入所属模块" />
         </el-form-item>
-        <el-form-item label="用例标题" prop="testTitle">
-          <el-input v-model="form.testTitle" placeholder="请输入用例标题" />
-        </el-form-item>
-        <el-form-item label="优先级(1、2、3、4优先级依次降低)" prop="priority">
-          <el-input v-model="form.priority" placeholder="请输入优先级(1、2、3、4优先级依次降低)" />
-        </el-form-item>
-        <el-form-item label="前置条件" prop="preconditions">
-          <el-input v-model="form.preconditions" placeholder="请输入前置条件" />
-        </el-form-item>
-        <el-form-item label="测试输入" prop="testInput">
-          <el-input v-model="form.testInput" placeholder="请输入测试输入" />
-        </el-form-item>
-        <el-form-item label="操作步骤" prop="steps">
-          <el-input v-model="form.steps" placeholder="请输入操作步骤" />
-        </el-form-item>
-        <el-form-item label="预期结果" prop="expectedOutcome">
-          <el-input v-model="form.expectedOutcome" placeholder="请输入预期结果" />
-        </el-form-item>
-        <el-form-item label="测试结果" prop="testResults">
-          <el-input v-model="form.testResults" placeholder="请输入测试结果" />
+        <el-form-item label="优先级" prop="priority">
+          <el-input v-model="form.priority" placeholder="请输入优先级" />
         </el-form-item>
         <el-form-item label="创建者" prop="creator">
           <el-input v-model="form.creator" placeholder="请输入创建者" />
         </el-form-item>
-        <el-form-item label="执行者" prop="executor">
-          <el-input v-model="form.executor" placeholder="请输入执行者" />
-        </el-form-item>
         <el-form-item label="执行日期" prop="executionDate">
-          <el-date-picker clearable
-            v-model="form.executionDate"
-            type="date"
-            value-format="yyyy-MM-dd"
+          <el-date-picker clearable v-model="form.executionDate" type="date" value-format="yyyy-MM-dd"
             placeholder="请选择执行日期">
           </el-date-picker>
         </el-form-item>
@@ -214,7 +134,7 @@ export default {
         priority: null,
         creator: null,
         executionDate: null,
-        
+
       },
       // 表单参数
       form: {},
@@ -281,7 +201,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.testCaseId)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -323,12 +243,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const testCaseIds = row.testCaseId || this.ids;
-      this.$modal.confirm('是否确认删除【请填写功能名称】编号为"' + testCaseIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除【请填写功能名称】编号为"' + testCaseIds + '"的数据项？').then(function () {
         return delCase(testCaseIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {
