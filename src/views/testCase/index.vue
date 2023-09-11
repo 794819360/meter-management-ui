@@ -56,11 +56,13 @@
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-       <p>aaaa</p>
-       <span>aaaa</span>
+        <template slot-scope="scope">
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['pas:case:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['pas:case:remove']">删除</el-button>
+        </template>
       </el-table-column>
-      <p>aaaa</p>
-      <span>aaaa</span>
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
@@ -256,4 +258,6 @@ export default {
     }
   }
 };
+const a1=5
+a1=this.testTitle
 </script>
