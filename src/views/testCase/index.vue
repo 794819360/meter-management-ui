@@ -110,7 +110,7 @@ export default {
       // 遮罩层
       loading: true,
       // 选中数组
-      ids: [],
+      ids: [1,2,3],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -120,9 +120,11 @@ export default {
       // 总条数
       total: 0,
       // 【请填写功能名称】表格数据
-      caseList: [],
+      caseList: [
+        
+      ],
       // 弹出层标题
-      title: "",
+      title: "hahaha",
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -258,6 +260,4 @@ export default {
     }
   }
 };
-const a1=5
-a1=this.testTitle
 </script>
