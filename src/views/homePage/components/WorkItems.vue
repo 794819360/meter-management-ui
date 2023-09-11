@@ -1,7 +1,7 @@
 <template>
-  <div class="picture">
-    <div class="work-title">工作项 </div>
-    <div class="work">
+  <div class="pic">
+    <div class="hour-title">工作项 </div>
+    <div class="hour">
       <div id="myChartWork" class="charts"></div>
     </div>
   </div>
@@ -9,6 +9,9 @@
 </template>
 <script>
 // import { getEdition } from '@/api/home'
+
+import * as echarts from 'echarts';
+require('echarts/theme/macarons') // echarts theme
 export default {
   name: "WorkItems",
   // props: {
@@ -40,6 +43,10 @@ export default {
   created () {
     // this.getNumber()
   },
+  mounted () {
+    this.drawLine()
+  }
+  ,
   methods: {
     async getNumber () {
       let res = await getEdition()
@@ -60,13 +67,13 @@ export default {
 
     drawLine () {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChartWork"));
+      let myChart = echarts.init(document.getElementById("myChartWork"));
       window.addEventListener("resize", function () { myChart.resize(); });
 
       // 绘制图表
       myChart.setOption({
         grid: {
-          top: '25%',//距上边距
+          top: '10%',//距上边距
           left: '15%',//距离左边距
           right: '20%',//距离右边距
           bottom: '25%',//距离下边距
@@ -98,7 +105,7 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: ['缺陷', '任务', '需求']
+          data: ['计划', '用例', '缺陷']
         },
         series: [
           {
@@ -130,7 +137,7 @@ export default {
               show: false,
               position: 'inside'
             },
-            data: this.underway
+            data: [10, 20, 30]
 
           },
           {
@@ -146,7 +153,7 @@ export default {
               show: false,
               position: 'inside'
             },
-            data: this.complete
+            data: [40, 20, 10]
 
           },
 
@@ -160,34 +167,54 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.picture {
+.selectBtn {
+  background-color: #1684fc;
+  color: #ffffff;
+}
+.pic {
   display: flex;
   width: 100%;
-  height: 240px;
+  height: 250px;
+  flex-direction: column;
 
-  .work-title {
-    position: absolute;
-    margin-left: 10px;
-    margin-top: 10px;
-    height: 20px;
-    font-size: 16px;
-    font-family: Source Han Sans CN, Source Han Sans CN-Medium;
-    font-weight: 550;
-    color: rgba(0, 0, 0, 0.85);
-    line-height: 20px;
+  .hour-title {
+      display: flex;
+      float: left;
+      // position: absolute;
+      margin-left: 10px;
+      margin-top: 10px;
+      height: 20px;
+      font-size: 16px;
+      font-family: Source Han Sans CN, Source Han Sans CN-Medium;
+      font-weight: 550;
+      color: rgba(0, 0, 0, 0.85);
+      line-height: 20px;
+    }
+  .pic-one {
+    width: 100%;
+    height: 50px;
+    // display: flex;
+    .hour-icon {
+      margin-top: 10px;
+      display: flex;
+      float: right;
+      margin-right: 10px;
+    }
+  
   }
-  .work {
-    width: 95%;
-    display: flex;
-    height: 220px;
-    position: relative;
+}
+.hour {
+  width: 100%;
+  display: flex;
+  height: 230px;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  .charts {
+    width: calc(100% - 5%);
+    height: calc(100% - 5%);
     justify-content: center;
     align-items: center;
-
-    .charts {
-      width: calc(100% - 10%);
-      height: calc(100% - 20%);
-    }
   }
 }
 </style>
