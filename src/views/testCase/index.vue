@@ -77,6 +77,9 @@
         <el-form-item label="所属模块" prop="testModule">
           <el-input v-model="form.testModule" placeholder="请输入所属模块" />
         </el-form-item>
+        <el-form-item label="前置条件" prop="tiaojian">
+          <el-input v-model="form.testModule" placeholder="请输入前置条件" />
+        </el-form-item>
         <el-form-item label="优先级" prop="priority">
           <el-input v-model="form.priority" placeholder="请输入优先级" />
         </el-form-item>
@@ -110,7 +113,7 @@ export default {
       // 遮罩层
       loading: true,
       // 选中数组
-      ids: [1,2,3],
+      ids: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -121,10 +124,18 @@ export default {
       total: 0,
       // 【请填写功能名称】表格数据
       caseList: [
-        
+    {
+      testTitle:'sadasdas',
+      testModule:'2313123',
+      priority:'1',
+      creator:'jiangchengbei',
+      executionDate:'2022-12-4',
+      remark:'掉毛杨明泽'
+    }
+      
       ],
       // 弹出层标题
-      title: "hahaha",
+      title: "",
       // 是否显示弹出层
       open: false,
       // 查询参数
