@@ -138,7 +138,7 @@
 
   </div>
 </template>
-<script >
+<script  >
 export default {
   name: "dept",
   data() {
